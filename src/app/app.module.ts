@@ -21,7 +21,7 @@ import { InMemoryContactsApi } from './contacts/in-memory-contacts.service';
     AppRoutingModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(InMemoryContactsApi, { delay: 200 }),
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
