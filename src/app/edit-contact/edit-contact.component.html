@@ -4,9 +4,21 @@
     <section>
       <nav>Name/Info</nav>
       <div>
-        <input formControlName="firstName" placeholder="First Name" />
+        <input formControlName="firstName" [class.error]="firstName.invalid && firstName.touched" placeholder="First Name" />
+        @if(firstName.errors?.['required'] &&
+        firstName.touched) {
+        <em>Please Enter a First Name</em>
+        }
+        @if(firstName.errors?.['minlength'] && firstName.touched) {
+        <em>First Name must be at least 3 characters</em>
+        }
         <input formControlName="lastName" placeholder="Last Name" />
-        <input formControlName="dateOfBirth" [value]="contactForm.controls.dateOfBirth.value | date:'yyyy-MM-dd'" type="date" placeholder="Date of Birth" />
+        <input
+          formControlName="dateOfBirth"
+          [value]="contactForm.controls.dateOfBirth.value | date : 'yyyy-MM-dd'"
+          type="date"
+          placeholder="Date of Birth"
+        />
         <div>
           <input
             formControlName="favoritesRanking"
@@ -49,7 +61,9 @@
     <section>
       <nav>Address</nav>
       <div>
-        <div formGroupName="address" class="address">
+        <div formGroupName="address" class="address" 
+        [class.error]="address.invalid && address.dirty && address.touched"
+        >
           <div class="flex-group">
             <input placeholder="Address" formControlName="streetAddress" />
             <img src="/assets/plus-grey-blue.png" class="add" />
@@ -68,17 +82,28 @@
             }
           </select>
         </div>
+        @if(address.invalid && address.dirty) {
+          <em>Incomplete Address</em>
+        }
       </div>
     </section>
     <section>
       <nav>Notes</nav>
       <div>
-        <textarea formControlName="notes" placeholder="Notes" rows="5"></textarea>
+        <textarea
+          formControlName="notes"
+          placeholder="Notes"
+          rows="5"
+          [class.error]="notes.errors?.['restrictedWords']"
+        ></textarea>
+        @if(notes.errors?.['restrictedWords']) {
+          <em>Restricted words found: {{ notes.errors?.['restrictedWords'] }}</em>
+        }
       </div>
     </section>
     <div class="buttons">
       <button class="secondary">Cancel</button>
-      <button class="primary" type="submit">Save</button>
+      <button class="primary" type="submit" [disabled]="contactForm.invalid">Save</button>
     </div>
   </form>
 </div>
