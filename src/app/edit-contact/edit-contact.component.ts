@@ -4,10 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ContactsService } from '../contacts/contacts.service';
 import { addressTypeValues, phoneTypeValues } from '../contacts/contact.model';
 import { restrictedWords } from '../validators/restricted-words.validator';
+import { ProfileIconSelectorComponent } from '../profile-icon-selector/profile-icon-selector.component';
+
 
 @Component({
   templateUrl: './edit-contact.component.html',
   styleUrls: ['./edit-contact.component.css'],
+  providers: [ProfileIconSelectorComponent],
 })
 export class EditContactComponent implements OnInit {
 

@@ -1,0 +1,13 @@
+<hr />
+{{ this.profileIcons }}
+<hr />
+<ul>
+  @for(iconName of this.profileIcons; track iconName) {
+  <li>
+    {{this.profileIcons.length}}
+    <input type="radio" formControlName="profileIcon" [value]="iconName" />
+    <img [src]="'/assets/profile/' + iconName" [alt]="iconName" />
+  </li>
+  }
+
+</ul>

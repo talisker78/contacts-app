@@ -4,6 +4,7 @@
     <section>
       <nav>Name/Info</nav>
       <div>
+        <con-profile-icon-selector formControlName="icon" />
         <input formControlName="firstName" [class.error]="firstName.invalid && firstName.touched" placeholder="First Name" />
         @if(firstName.errors?.['required'] &&
         firstName.touched) {
@@ -15,7 +16,6 @@
         <input formControlName="lastName" placeholder="Last Name" />
         <input
           formControlName="dateOfBirth"
-          [value]="contactForm.controls.dateOfBirth.value | date : 'yyyy-MM-dd'"
           type="date"
           placeholder="Date of Birth"
         />
