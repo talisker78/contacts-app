@@ -1,13 +1,17 @@
-<hr />
-{{ this.profileIcons }}
-<hr />
+@if(showAllIcons) {
 <ul>
   @for(iconName of this.profileIcons; track iconName) {
   <li>
-    {{this.profileIcons.length}}
-    <input type="radio" formControlName="profileIcon" [value]="iconName" />
-    <img [src]="'/assets/profile/' + iconName" [alt]="iconName" />
+    <img
+      [src]="'/assets/profile/' + iconName"
+      [class.selected]="this.selectedIcon === iconName"
+      [alt]="iconName"
+      (click)="iconSelected(iconName)"
+    />
   </li>
   }
-
 </ul>
+} 
+@if(!showAllIcons) {
+<img [src]="'/assets/profile/' + this.selectedIcon" [alt]="this.selectedIcon" (click)="showAllIcons = true" />
+}

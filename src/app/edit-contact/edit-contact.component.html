@@ -71,12 +71,10 @@
           <input placeholder="City" formControlName="city" />
           <input placeholder="State/Region" formControlName="state" />
           <input placeholder="Zip/Postal Code" formControlName="postalCode" />
-          <select>
+          <select formControlName="addressType">
             @for(addressType of addressTypes; let idx = $index; track idx) {
             <option
-              value="{{ addressType.value }}"
-              formControlName="addressType"
-            >
+              value="{{ addressType.value }}">
               {{ addressType.title }}
             </option>
             }
