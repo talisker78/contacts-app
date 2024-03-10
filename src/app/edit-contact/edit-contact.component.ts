@@ -25,10 +25,7 @@ export class EditContactComponent implements OnInit {
     lastName: '',
     dateOfBirth: '',
     favoritesRanking: <number | null>null,
-    phone: this.fb.nonNullable.group({
-      phoneNumber: '',
-      phoneType: '',
-    }),
+    phones: this.fb.array([this.createPhoneGroup()]),
     address: this.fb.nonNullable.group({
       streetAddress: ['', Validators.required],
       city: ['', Validators.required],
@@ -62,6 +59,15 @@ export class EditContactComponent implements OnInit {
   get notes() { return this.contactForm.get('notes') as FormControl; }
   
   get address() { return this.contactForm.get('address') as FormGroup; }
+
+  createPhoneGroup() {
+    return this.fb.nonNullable.group({
+      phoneNumber: '',
+      phoneType: '',
+    })
+  }
+
+
   saveContact() {
     console.log('Saving contact...');
     console.log(this.contactForm.value.dateOfBirth, typeof this.contactForm.value.dateOfBirth);

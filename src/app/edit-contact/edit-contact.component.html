@@ -5,12 +5,14 @@
       <nav>Name/Info</nav>
       <div>
         <con-profile-icon-selector formControlName="icon" />
-        <input formControlName="firstName" [class.error]="firstName.invalid && firstName.touched" placeholder="First Name" />
-        @if(firstName.errors?.['required'] &&
-        firstName.touched) {
+        <input
+          formControlName="firstName"
+          [class.error]="firstName.invalid && firstName.touched"
+          placeholder="First Name"
+        />
+        @if(firstName.errors?.['required'] && firstName.touched) {
         <em>Please Enter a First Name</em>
-        }
-        @if(firstName.errors?.['minlength'] && firstName.touched) {
+        } @if(firstName.errors?.['minlength'] && firstName.touched) {
         <em>First Name must be at least 3 characters</em>
         }
         <input formControlName="lastName" placeholder="Last Name" />
@@ -40,9 +42,11 @@
       </div>
     </section>
     <section>
-      <nav>Phone</nav>
-      <div formGroupName="phone" class="flex-column">
-        <div class="flex-group">
+      <nav>Phones</nav>
+      <div formArrayName="phones">
+        @for(phone of contactForm.controls.phones.controls; track $index) {
+
+        <div formGroupName="$index" class="flex-group">
           <input formControlName="phoneNumber" placeholder="Phone" />
           <img src="/assets/plus-grey-blue.png" class="add" />
         </div>
@@ -56,13 +60,32 @@
             {{ phoneType.title }}
           </span>
         </div>
+        <div formGroupName="phone" class="flex-column">
+          <div class="flex-group">
+            <input formControlName="phoneNumber" placeholder="Phone" />
+            <img src="/assets/plus-grey-blue.png" class="add" />
+          </div>
+          <div class="radio">
+            <span *ngFor="let phoneType of phoneTypes">
+              <input
+                type="radio"
+                formControlName="phoneType"
+                [value]="phoneType.value"
+              />
+              {{ phoneType.title }}
+            </span>
+          </div>
+        </div>
+        }
       </div>
     </section>
     <section>
       <nav>Address</nav>
       <div>
-        <div formGroupName="address" class="address" 
-        [class.error]="address.invalid && address.dirty && address.touched"
+        <div
+          formGroupName="address"
+          class="address"
+          [class.error]="address.invalid && address.dirty && address.touched"
         >
           <div class="flex-group">
             <input placeholder="Address" formControlName="streetAddress" />
@@ -73,15 +96,14 @@
           <input placeholder="Zip/Postal Code" formControlName="postalCode" />
           <select formControlName="addressType">
             @for(addressType of addressTypes; let idx = $index; track idx) {
-            <option
-              value="{{ addressType.value }}">
+            <option value="{{ addressType.value }}">
               {{ addressType.title }}
             </option>
             }
           </select>
         </div>
         @if(address.invalid && address.dirty) {
-          <em>Incomplete Address</em>
+        <em>Incomplete Address</em>
         }
       </div>
     </section>
@@ -95,13 +117,15 @@
           [class.error]="notes.errors?.['restrictedWords']"
         ></textarea>
         @if(notes.errors?.['restrictedWords']) {
-          <em>Restricted words found: {{ notes.errors?.['restrictedWords'] }}</em>
+        <em>Restricted words found: {{ notes.errors?.['restrictedWords'] }}</em>
         }
       </div>
     </section>
     <div class="buttons">
       <button class="secondary">Cancel</button>
-      <button class="primary" type="submit" [disabled]="contactForm.invalid">Save</button>
+      <button class="primary" type="submit" [disabled]="contactForm.invalid">
+        Save
+      </button>
     </div>
   </form>
 </div>
