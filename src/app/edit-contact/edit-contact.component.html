@@ -44,29 +44,19 @@
     <section>
       <nav>Phones</nav>
       <div formArrayName="phones">
-        @for(phone of contactForm.controls.phones.controls; track $index) {
-
-        <div formGroupName="$index" class="flex-group">
-          <input formControlName="phoneNumber" placeholder="Phone" />
-          <img src="/assets/plus-grey-blue.png" class="add" />
-        </div>
-        <div class="radio">
-          <span *ngFor="let phoneType of phoneTypes">
-            <input
-              type="radio"
-              formControlName="phoneType"
-              [value]="phoneType.value"
-            />
-            {{ phoneType.title }}
-          </span>
-        </div>
-        <div formGroupName="phone" class="flex-column">
+        @for(phone of contactForm.controls.phones.controls; track phone; let index = $index) {
+        <div class="flex-column" [formGroupName]="index">
           <div class="flex-group">
             <input formControlName="phoneNumber" placeholder="Phone" />
-            <img src="/assets/plus-grey-blue.png" class="add" />
+            <img
+              src="/assets/plus-grey-blue.png"
+              class="add"
+              (click)="addPhone()"
+            />
           </div>
           <div class="radio">
-            <span *ngFor="let phoneType of phoneTypes">
+            @for(phoneType of phoneTypes; let idx = $index; track idx) {
+            <span>
               <input
                 type="radio"
                 formControlName="phoneType"
@@ -74,6 +64,7 @@
               />
               {{ phoneType.title }}
             </span>
+          }
           </div>
         </div>
         }
@@ -85,7 +76,11 @@
         <div
           formGroupName="address"
           class="address"
-          [class.error]="address.invalid && address.dirty && address.touched"
+          [class.error]="
+            contactForm.controls.address.invalid &&
+            contactForm.controls.address.dirty &&
+            contactForm.controls.address.touched
+          "
         >
           <div class="flex-group">
             <input placeholder="Address" formControlName="streetAddress" />
@@ -102,7 +97,8 @@
             }
           </select>
         </div>
-        @if(address.invalid && address.dirty) {
+        @if(contactForm.controls.address.invalid &&
+        contactForm.controls.address.dirty) {
         <em>Incomplete Address</em>
         }
       </div>

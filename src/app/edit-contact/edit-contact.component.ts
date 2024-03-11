@@ -1,22 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContactsService } from '../contacts/contacts.service';
 import { addressTypeValues, phoneTypeValues } from '../contacts/contact.model';
 import { restrictedWords } from '../validators/restricted-words.validator';
 import { ProfileIconSelectorComponent } from '../profile-icon-selector/profile-icon-selector.component';
 
-
 @Component({
   templateUrl: './edit-contact.component.html',
-  styleUrls: ['./edit-contact.component.css'],
-  providers: [ProfileIconSelectorComponent],
+  styleUrls: ['./edit-contact.component.css']
 })
 export class EditContactComponent implements OnInit {
-
   phoneTypes = phoneTypeValues;
   addressTypes = addressTypeValues;
-  
+
   contactForm = this.fb.nonNullable.group({
     id: '',
     icon: '',
@@ -33,7 +30,7 @@ export class EditContactComponent implements OnInit {
       postalCode: ['', Validators.required],
       addressType: '',
     }),
-    notes: ['', restrictedWords(['foo', 'bar', 'baz'])],
+    notes: ['', restrictedWords(['foo', 'bar'])],
   });
 
   constructor(
@@ -49,35 +46,40 @@ export class EditContactComponent implements OnInit {
 
     this.contactsService.getContact(contactId).subscribe((contact) => {
       if (!contact) return;
+
+      for (let i = 1; i < contact.phones.length; i++) {
+        this.addPhone();
+      }
+
       this.contactForm.setValue(contact);
       console.log(contact.dateOfBirth, typeof contact.dateOfBirth);
     });
   }
-
-  get firstName() { return this.contactForm.get('firstName') as FormControl; }
-  get lastName() { return this.contactForm.get('lastName') as FormControl; }
-  get notes() { return this.contactForm.get('notes') as FormControl; }
-  
-  get address() { return this.contactForm.get('address') as FormGroup; }
-
   createPhoneGroup() {
     return this.fb.nonNullable.group({
       phoneNumber: '',
       phoneType: '',
-    })
+    });
   }
 
+  addPhone() {
+    this.contactForm.controls.phones.push(this.createPhoneGroup());
+  }
 
+  get firstName() {
+    return this.contactForm.controls.firstName;
+  }
+
+  get notes() {
+    return this.contactForm.controls.notes;
+  }
   saveContact() {
-    console.log('Saving contact...');
-    console.log(this.contactForm.value.dateOfBirth, typeof this.contactForm.value.dateOfBirth);
+    console.log(
+      this.contactForm.value.dateOfBirth,
+      typeof this.contactForm.value.dateOfBirth
+    );
     this.contactsService.saveContact(this.contactForm.getRawValue()).subscribe({
-      next: () => {
-        console.log('Contact saved');
-        this.router.navigate(['/contacts']);
-      },
-      error: (err: Error) => console.error('Error saving contact', err),
-      complete: () => console.log('Save contact completed'),
+      next: () => this.router.navigate(['/contacts'])
     });
   }
 }
