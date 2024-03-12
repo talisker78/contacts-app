@@ -7,13 +7,14 @@ export interface Contact {
   dateOfBirth: string,
   favoritesRanking: number | null,
   phones: Phone[],
-  address: Address,
+  addresses: Address[],
   notes: string,
 }
 
 export interface Phone {
   phoneNumber: string,
   phoneType: string,
+  preferred: boolean,
 }
 
 export interface Address {

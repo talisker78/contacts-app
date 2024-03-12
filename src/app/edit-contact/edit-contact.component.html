@@ -41,10 +41,12 @@
         </div>
       </div>
     </section>
+    <!-- Phones -->
     <section>
       <nav>Phones</nav>
       <div formArrayName="phones">
-        @for(phone of contactForm.controls.phones.controls; track phone; let index = $index) {
+        @for(phone of contactForm.controls.phones.controls; track phone; let
+        index = $index) {
         <div class="flex-column" [formGroupName]="index">
           <div class="flex-group">
             <input formControlName="phoneNumber" placeholder="Phone" />
@@ -54,6 +56,10 @@
               (click)="addPhone()"
             />
           </div>
+          @if(phone.controls.phoneNumber.invalid &&
+          phone.controls.preferred.value === true) {
+          <em>Preferred Phone is required</em>
+          }
           <div class="radio">
             @for(phoneType of phoneTypes; let idx = $index; track idx) {
             <span>
@@ -64,27 +70,36 @@
               />
               {{ phoneType.title }}
             </span>
-          }
+            }
           </div>
+          <span><input type="checkbox" formControlName="preferred" />Preferred</span>
         </div>
         }
       </div>
     </section>
+    <!-- End Phones -->
+    <!-- Addresses -->
     <section>
-      <nav>Address</nav>
-      <div>
+      <nav>Addresses</nav>
+      <div formArrayName="addresses">
+        @for(address of contactForm.controls.addresses.controls; track address;
+        let index = $index) {
         <div
-          formGroupName="address"
+          [formGroupName]="index"
           class="address"
           [class.error]="
-            contactForm.controls.address.invalid &&
-            contactForm.controls.address.dirty &&
-            contactForm.controls.address.touched
+            contactForm.controls.addresses.invalid &&
+            contactForm.controls.addresses.dirty &&
+            contactForm.controls.addresses.touched
           "
         >
           <div class="flex-group">
             <input placeholder="Address" formControlName="streetAddress" />
-            <img src="/assets/plus-grey-blue.png" class="add" />
+            <img
+              src="/assets/plus-grey-blue.png"
+              class="add"
+              (click)="addAddress()"
+            />
           </div>
           <input placeholder="City" formControlName="city" />
           <input placeholder="State/Region" formControlName="state" />
@@ -97,10 +112,10 @@
             }
           </select>
         </div>
-        @if(contactForm.controls.address.invalid &&
-        contactForm.controls.address.dirty) {
+        @if(contactForm.controls.addresses.invalid &&
+        contactForm.controls.addresses.dirty) {
         <em>Incomplete Address</em>
-        }
+        } }
       </div>
     </section>
     <section>

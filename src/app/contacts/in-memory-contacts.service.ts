@@ -13,14 +13,14 @@ export class InMemoryContactsApi implements InMemoryDbService {
         dateOfBirth: new Date('1994/05/05').toISOString(),
         favoritesRanking: 0,
         
-        phones: [{ phoneNumber: '555-765-4321', phoneType: 'mobile' }],
-        address: {
+        phones: [{ phoneNumber: '555-765-4321', phoneType: 'mobile', preferred: false }],
+        addresses: [{
           streetAddress: '777 Whimsy Lane',
           city: 'Gleeberg City',
           state: 'Colohoma',
           postalCode: 'A4321',
           addressType: 'home',
-        },
+        }],
         notes: '',
       },
       {
@@ -31,14 +31,14 @@ export class InMemoryContactsApi implements InMemoryDbService {
         lastName: 'Flungford',
         dateOfBirth: new Date('1988/10/05').toISOString(),
         favoritesRanking: 0,
-        phones: [{ phoneNumber: '555-877-5678', phoneType: 'mobile' }],
-        address: {
+        phones: [{ phoneNumber: '555-877-5678', phoneType: 'mobile', preferred: false }],
+        addresses: [{
           streetAddress: '543 Lullaby Lane',
           city: 'Sleepytown',
           state: 'Ulaska',
           postalCode: 'F2231',
           addressType: 'other'
-        },
+        }],
         notes: '',
 
       },
@@ -50,14 +50,14 @@ export class InMemoryContactsApi implements InMemoryDbService {
         lastName: 'Giggleworth',
         dateOfBirth: new Date('1986/11/08').toISOString(),
         favoritesRanking: 1,
-        phones: [{ phoneNumber: '555-123-4567', phoneType: 'mobile' }],
-        address: {
+        phones: [{ phoneNumber: '555-123-4567', phoneType: 'mobile', preferred: false }],
+        addresses: [{
           streetAddress: '123 Merriment Avenue',
           city: 'Dorado City',
           state: 'Mezona',
           postalCode: 'Z2345',
           addressType: 'work'
-        },
+        }],
         notes: '',
       },
     ]

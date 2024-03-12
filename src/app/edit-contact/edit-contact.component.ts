@@ -8,7 +8,7 @@ import { ProfileIconSelectorComponent } from '../profile-icon-selector/profile-i
 
 @Component({
   templateUrl: './edit-contact.component.html',
-  styleUrls: ['./edit-contact.component.css']
+  styleUrls: ['./edit-contact.component.css'],
 })
 export class EditContactComponent implements OnInit {
   phoneTypes = phoneTypeValues;
@@ -23,13 +23,7 @@ export class EditContactComponent implements OnInit {
     dateOfBirth: '',
     favoritesRanking: <number | null>null,
     phones: this.fb.array([this.createPhoneGroup()]),
-    address: this.fb.nonNullable.group({
-      streetAddress: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      postalCode: ['', Validators.required],
-      addressType: '',
-    }),
+    addresses: this.fb.array([this.createAddressGroup()]),
     notes: ['', restrictedWords(['foo', 'bar'])],
   });
 
@@ -56,16 +50,38 @@ export class EditContactComponent implements OnInit {
     });
   }
   createPhoneGroup() {
-    return this.fb.nonNullable.group({
+    const phoneGroup = this.fb.nonNullable.group({
       phoneNumber: '',
       phoneType: '',
+      preferred: false,
     });
+    phoneGroup.controls.preferred.valueChanges.subscribe((value) => {
+      if (value)
+        phoneGroup.controls.phoneNumber.addValidators([Validators.required]);
+      else phoneGroup.controls.phoneNumber.clearValidators();
+
+      phoneGroup.controls.phoneNumber.updateValueAndValidity();
+    });
+    return phoneGroup;
   }
 
   addPhone() {
     this.contactForm.controls.phones.push(this.createPhoneGroup());
   }
 
+  createAddressGroup() {
+    return this.fb.nonNullable.group({
+      streetAddress: '',
+      city: '',
+      state: '',
+      postalCode: '',
+      addressType: '',
+    });
+  }
+
+  addAddress() {
+    this.contactForm.controls.addresses.push(this.createAddressGroup());
+  }
   get firstName() {
     return this.contactForm.controls.firstName;
   }
@@ -79,7 +95,7 @@ export class EditContactComponent implements OnInit {
       typeof this.contactForm.value.dateOfBirth
     );
     this.contactsService.saveContact(this.contactForm.getRawValue()).subscribe({
-      next: () => this.router.navigate(['/contacts'])
+      next: () => this.router.navigate(['/contacts']),
     });
   }
 }
